@@ -151,3 +151,4 @@ frontend/src/
 | Pino | Logging | Structured JSON logs, production-ready |
 | Jest + Supertest | Testing | Industry standard, great DX |
 | Swagger/OpenAPI | API docs | Auto-generated, always in sync |
+

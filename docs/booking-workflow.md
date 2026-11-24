@@ -89,3 +89,4 @@ A: The booking status remains 'confirmed' but payment status is 'failed'. We imp
 
 **Q: What if the payment webhook fails to reach the server?**
 A: Razorpay retries webhooks. We use idempotency keys (razorpayPaymentId) to ensure the same webhook event is only processed once even if received multiple times.
+

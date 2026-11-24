@@ -202,3 +202,4 @@ A: JavaScript (including injected XSS scripts) cannot read HttpOnly cookies. Sto
 
 **Q: What is refresh token rotation?**
 A: Every time a refresh token is used, it's replaced with a new one and the old one is invalidated. If an attacker steals a refresh token and uses it after the legitimate user has also used it, the system detects that the token was already rotated and can invalidate the entire session family.
+

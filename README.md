@@ -152,3 +152,4 @@ This is a learning and portfolio project. The development is intentionally incre
 ## 📜 License
 
 MIT License – see [LICENSE](LICENSE) for details.
+

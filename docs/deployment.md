@@ -136,3 +136,4 @@ volumes:
 - [ ] Email service configured and tested
 - [ ] Health endpoints responding correctly
 - [ ] Graceful shutdown implemented
+

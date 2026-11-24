@@ -144,3 +144,4 @@ npm run test:integration  # Integration tests only
 npm run test:coverage     # With coverage report
 npm run test:watch        # Watch mode during development
 ```
+
