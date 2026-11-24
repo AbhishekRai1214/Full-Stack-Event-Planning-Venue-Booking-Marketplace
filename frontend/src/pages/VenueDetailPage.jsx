@@ -292,3 +292,4 @@ export const VenueDetailPage = () => {
 };
 
 export default VenueDetailPage;
+

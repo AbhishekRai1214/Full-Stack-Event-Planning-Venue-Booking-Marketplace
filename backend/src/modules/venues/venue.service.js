@@ -139,3 +139,4 @@ class VenueService {
 }
 
 module.exports = new VenueService();
+

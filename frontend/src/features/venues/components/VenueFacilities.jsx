@@ -35,3 +35,4 @@ export const VenueFacilities = ({ facilities = [] }) => {
 };
 
 export default VenueFacilities;
+

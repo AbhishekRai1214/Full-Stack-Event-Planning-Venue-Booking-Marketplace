@@ -13,7 +13,7 @@ Track the development progress of VenueAura. Each phase is committed separately 
 | **Phase 2** | UI Foundation (design system) | ✅ Complete | `feat: implement reusable UI design system` |
 | **Phase 3** | Home Page | ✅ Complete | `feat: build responsive VenueAura homepage` |
 | **Phase 4** | Venue Marketplace | ✅ Complete | `feat: implement venue discovery marketplace` |
-| **Phase 5** | Vendor Marketplace | ⬜ Pending | `feat: implement vendor marketplace` |
+| **Phase 5** | Vendor Marketplace | ✅ Complete | `feat: implement vendor marketplace` |
 | **Phase 6** | Authentication & Authorization | ⬜ Pending | `feat: implement JWT authentication and RBAC` |
 | **Phase 7** | Customer & Vendor Dashboards | ⬜ Pending | `feat: implement customer and vendor dashboards` |
 | **Phase 8** | Booking System | ⬜ Pending | `feat: implement booking and availability system` |
@@ -284,7 +284,47 @@ User, Venue, Vendor, Booking, Payment, Event, Budget, Review, Contact, Notificat
 
 ---
 
-## Phases 5–15
+## Phase 5 – Vendor Marketplace ✅
+
+**Status:** Complete  
+**Date:** 2026-11-25
+
+### What Was Implemented
+
+1. **Backend Vendor Domain (`backend/src/modules/vendors/`):**
+   - **`vendor.model.js`**: Mongoose model with embedded package tiers, portfolio items, contact info, ratings, and compound indexes (`{ status: 1, category: 1, 'location.city': 1 }`, full text index on `businessName`, `description`, `city`).
+   - **`vendor.validation.js`**: Zod query schema with type transformations for filtering (`category`, `city`, `search`, `minPrice`, `maxPrice`, `minExperience`, `rating`, `sort`, `page`, `limit`), and body schemas (`createVendorSchema`, `updateVendorSchema`).
+   - **`vendor.repository.js`**: Encapsulated database operations using `.lean()`, sorting, pagination, and count operations.
+   - **`vendor.service.js`**: Business logic layer managing dynamic MongoDB filters, slug generation, sort strategies, and ownership verification.
+   - **`vendor.controller.js`**: Handlers using `asyncHandler` and standardized `ApiResponse`.
+   - **`vendor.routes.js`**: REST routes (`GET /api/v1/vendors`, `GET /api/v1/vendors/:idOrSlug`, `POST /api/v1/vendors/profile`, `PATCH /api/v1/vendors/:id`, `DELETE /api/v1/vendors/:id`).
+   - Mounted in `backend/src/app.js` under `/api/v1/vendors`.
+   - **`backend/src/jobs/seedVendors.js`**: Dedicated database seeder with 6 award-winning event vendors across photography, catering, floral decor, DJ acoustics, couture makeup, and live acoustic music.
+
+2. **Frontend Vendor Marketplace (`frontend/src/features/vendors/`):**
+   - **`vendorsApi.js` & `vendorsSlice.js`**: Redux Toolkit slice and Axios API client with local fallback dataset for offline/sandbox mode.
+   - Mounted in `frontend/src/app/store.js` as `vendors` state slice.
+   - **`VendorFilters.jsx`**: Sidebar filter with Category selector, City dropdown, Experience tiers (5+, 8+, 10+, 15+ years), Price range thresholds, and Reset All.
+   - **`VendorPackages.jsx`**: Tiered package cards displaying pricing in INR, feature checklists, and interactive package selection.
+   - **`VendorPortfolio.jsx`**: Responsive visual photo gallery with lightbox image enlargement modal.
+   - **`VendorEnquiryCard.jsx`**: Sticky card displaying selected package / starting price, direct phone & email, date selection, and an interactive "Inquire with Vendor" modal with form validation.
+
+3. **Pages & Routing:**
+   - **`VendorListingPage.jsx`**: Quick horizontal category pill bar, search bar, sort selector (`newest`, `rating_desc`, `experience_desc`, `price_asc`, `price_desc`), mobile filter drawer, responsive vendor profile cards, and pagination.
+   - **`VendorDetailPage.jsx`**: Comprehensive vendor profile with cover banner, avatar, experience & verified badges, bio & service areas, packages comparison, portfolio grid, verified client quotes, and sticky enquiry card.
+   - Registered `/vendors` and `/vendors/:id` in `frontend/src/App.jsx`.
+
+### Verification Results
+| Check | Result |
+|---|---|
+| `backend syntax check` | ✅ `node -e "require('./src/app')"` loaded with 0 errors |
+| `npm run build` (frontend) | ✅ 1474 modules built cleanly in 17.2s (0 errors) |
+| Category Quick Tabs | ✅ Real-time filtering across 8 event service categories |
+| Responsive Layout | ✅ Mobile slide-over drawer, sticky enquiry card, lightbox modal |
+
+---
+
+## Phases 6–15
 
 See phase descriptions in [architecture.md](./docs/architecture.md).
 

@@ -36,6 +36,7 @@ const { errorHandler } = require('./middleware/errorHandler');
 // const authRoutes = require('./modules/auth/auth.routes');
 // const userRoutes = require('./modules/users/user.routes');
 const venueRoutes = require('./modules/venues/venue.routes');
+const vendorRoutes = require('./modules/vendors/vendor.routes');
 
 const app = express();
 
@@ -167,7 +168,7 @@ const apiRouter = express.Router();
 // apiRouter.use('/auth', authRoutes);           // Phase 6
 // apiRouter.use('/users', userRoutes);          // Phase 6
 apiRouter.use('/venues', venueRoutes);        // Phase 4
-// apiRouter.use('/vendors', vendorRoutes);      // Phase 5
+apiRouter.use('/vendors', vendorRoutes);      // Phase 5
 // apiRouter.use('/events', eventRoutes);        // Phase 7
 // apiRouter.use('/bookings', bookingRoutes);    // Phase 8
 // apiRouter.use('/payments', paymentRoutes);   // Phase 13

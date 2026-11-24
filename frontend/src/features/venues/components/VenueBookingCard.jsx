@@ -246,3 +246,4 @@ export const VenueBookingCard = ({ venue }) => {
 };
 
 export default VenueBookingCard;
+

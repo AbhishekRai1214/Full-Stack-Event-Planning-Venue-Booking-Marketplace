@@ -18,10 +18,12 @@ import { configureStore } from '@reduxjs/toolkit';
  */
 
 import venuesReducer from '@/features/venues/venuesSlice';
+import vendorsReducer from '@/features/vendors/vendorsSlice';
 
 export const store = configureStore({
   reducer: {
     venues: venuesReducer,
+    vendors: vendorsReducer,
   },
 
   middleware: getDefaultMiddleware =>

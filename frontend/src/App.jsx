@@ -4,6 +4,8 @@ import MainLayout from '@/components/layout/MainLayout';
 import HomePage from '@/pages/HomePage';
 import VenueListingPage from '@/pages/VenueListingPage';
 import VenueDetailPage from '@/pages/VenueDetailPage';
+import VendorListingPage from '@/pages/VendorListingPage';
+import VendorDetailPage from '@/pages/VendorDetailPage';
 import Button from '@/components/common/Button';
 import Badge from '@/components/common/Badge';
 import Spinner from '@/components/common/Spinner';
@@ -174,15 +176,9 @@ function App() {
         {/* Phase 4 Venue Marketplace */}
         <Route path="/venues" element={<VenueListingPage />} />
         <Route path="/venues/:id" element={<VenueDetailPage />} />
-        <Route
-          path="/vendors"
-          element={
-            <PlaceholderPage
-              title="Vendors Directory"
-              description="Phase 5 will implement vendor categories, portfolios, and booking enquiry flows."
-            />
-          }
-        />
+        {/* Phase 5 Vendor Marketplace */}
+        <Route path="/vendors" element={<VendorListingPage />} />
+        <Route path="/vendors/:id" element={<VendorDetailPage />} />
         <Route
           path="/compare"
           element={

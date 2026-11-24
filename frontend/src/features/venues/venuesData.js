@@ -344,3 +344,4 @@ export const sampleVenues = [
     ratings: { average: 4.6, count: 52 },
   },
 ];
+

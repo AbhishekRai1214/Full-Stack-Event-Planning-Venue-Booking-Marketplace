@@ -44,3 +44,4 @@ class VenueRepository {
 }
 
 module.exports = new VenueRepository();
+

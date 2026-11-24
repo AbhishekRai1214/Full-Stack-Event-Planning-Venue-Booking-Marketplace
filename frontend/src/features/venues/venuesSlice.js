@@ -122,3 +122,4 @@ export const { setFilters, resetFilters, toggleSaveVenue, clearSelectedVenue } =
   venuesSlice.actions;
 
 export default venuesSlice.reducer;
+

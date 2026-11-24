@@ -226,3 +226,4 @@ export const VenueFilters = ({ filters, onChange, onReset }) => {
 };
 
 export default VenueFilters;
+
