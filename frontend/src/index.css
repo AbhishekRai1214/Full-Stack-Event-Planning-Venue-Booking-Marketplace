@@ -1,0 +1,267 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base Styles ────────────────────────────────────────────────────────── */
+@layer base {
+  :root {
+    /* Design tokens as CSS variables for use in custom CSS */
+    --color-primary: #00c853;
+    --color-primary-dark: #009b45;
+    --color-background: #ffffff;
+    --color-background-secondary: #f7f8f6;
+    --color-text: #171717;
+    --color-text-muted: #777777;
+    --color-border: #e8e8e8;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply font-sans text-text bg-background antialiased;
+    font-feature-settings:
+      'cv02',
+      'cv03',
+      'cv04',
+      'cv11';
+  }
+
+  /* Serif headings by default for h1–h4 */
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-serif;
+  }
+
+  h5,
+  h6 {
+    @apply font-sans font-semibold;
+  }
+
+  /* Better focus indicators for accessibility */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary;
+  }
+
+  /* Smooth border defaults */
+  * {
+    @apply border-border;
+  }
+
+  /* Better image defaults */
+  img {
+    @apply max-w-full;
+  }
+}
+
+/* ─── Component Layer ────────────────────────────────────────────────────── */
+@layer components {
+  /* Buttons */
+  .btn-primary {
+    @apply bg-primary hover:bg-primary-600 active:bg-primary-700
+           text-white font-semibold
+           px-6 py-3 rounded-button
+           transition-all duration-200
+           shadow-primary-sm hover:shadow-primary-md
+           active:scale-[0.98]
+           inline-flex items-center justify-center gap-2
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100;
+  }
+
+  .btn-secondary {
+    @apply bg-white border-2 border-primary text-primary
+           hover:bg-primary-50 active:bg-primary-100
+           font-semibold
+           px-6 py-3 rounded-button
+           transition-all duration-200
+           inline-flex items-center justify-center gap-2
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply text-text-muted hover:text-text
+           hover:bg-background-secondary
+           font-medium
+           px-4 py-2 rounded-button
+           transition-all duration-200
+           inline-flex items-center justify-center gap-2;
+  }
+
+  .btn-danger {
+    @apply bg-error hover:bg-red-600
+           text-white font-semibold
+           px-6 py-3 rounded-button
+           transition-all duration-200
+           inline-flex items-center justify-center gap-2;
+  }
+
+  .btn-sm {
+    @apply px-4 py-2 text-sm;
+  }
+
+  .btn-lg {
+    @apply px-8 py-4 text-lg;
+  }
+
+  /* Cards */
+  .card {
+    @apply bg-background-card rounded-card shadow-card
+           hover:shadow-card-hover
+           transition-shadow duration-300;
+  }
+
+  /* Form inputs */
+  .input-field {
+    @apply w-full px-4 py-3
+           border border-border rounded-button
+           bg-white text-text placeholder:text-text-light
+           focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
+           transition-all duration-200
+           disabled:bg-background-secondary disabled:cursor-not-allowed;
+  }
+
+  .input-error {
+    @apply border-error focus:ring-error/30 focus:border-error;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-text mb-1.5;
+  }
+
+  .error-message {
+    @apply text-error text-sm mt-1 flex items-center gap-1;
+  }
+
+  /* Badges */
+  .badge-primary {
+    @apply bg-primary/10 text-primary text-xs font-semibold
+           px-2.5 py-1 rounded-full inline-flex items-center gap-1;
+  }
+
+  .badge-verified {
+    @apply bg-primary/10 text-primary text-xs font-medium
+           px-2 py-0.5 rounded-full inline-flex items-center gap-1;
+  }
+
+  .badge-pending {
+    @apply bg-warning/10 text-warning text-xs font-medium
+           px-2.5 py-1 rounded-full;
+  }
+
+  .badge-approved {
+    @apply bg-success/10 text-success text-xs font-medium
+           px-2.5 py-1 rounded-full;
+  }
+
+  .badge-rejected {
+    @apply bg-error/10 text-error text-xs font-medium
+           px-2.5 py-1 rounded-full;
+  }
+
+  /* Section layouts */
+  .section-container {
+    @apply max-w-content mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-20 lg:py-24;
+  }
+
+  .section-title {
+    @apply text-display-md md:text-display-lg font-serif font-bold text-text;
+  }
+
+  .section-subtitle {
+    @apply text-text-muted text-lg mt-3 max-w-2xl;
+  }
+
+  /* Navigation */
+  .nav-link {
+    @apply text-text-muted hover:text-text font-medium text-sm
+           transition-colors duration-200 relative
+           after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5
+           after:bg-primary after:transition-all after:duration-200
+           hover:after:w-full;
+  }
+
+  .nav-link-active {
+    @apply text-primary after:w-full;
+  }
+
+  /* Rating stars */
+  .stars {
+    @apply flex items-center gap-0.5;
+  }
+
+  /* Price display */
+  .price-tag {
+    @apply text-primary font-bold;
+  }
+
+  /* Divider */
+  .divider {
+    @apply border-t border-border my-8;
+  }
+
+  /* Skeleton loading */
+  .skeleton {
+    @apply bg-gradient-to-r from-background-secondary via-border to-background-secondary
+           bg-[length:200%_100%] animate-[shimmer_1.5s_infinite];
+  }
+}
+
+/* ─── Utilities ──────────────────────────────────────────────────────────── */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Gradient overlays */
+  .overlay-dark {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.3) 100%);
+  }
+
+  .overlay-card {
+    background: linear-gradient(180deg, transparent 30%, rgba(0, 0, 0, 0.75) 100%);
+  }
+
+  /* Truncate text */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ─── Custom Keyframes ───────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+

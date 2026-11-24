@@ -1,0 +1,26 @@
+# Backend .gitignore
+
+# Dependencies
+node_modules/
+
+# Environment variables (NEVER commit these)
+.env
+.env.local
+
+# Test artifacts
+coverage/
+.nyc_output/
+
+# Logs
+logs/
+*.log
+
+# Build output
+dist/
+
+# Uploads (served via Cloudinary in production)
+uploads/
+
+# OS
+.DS_Store
+Thumbs.db
