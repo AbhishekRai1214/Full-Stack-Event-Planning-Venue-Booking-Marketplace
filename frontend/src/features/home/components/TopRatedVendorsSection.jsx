@@ -43,3 +43,4 @@ export const TopRatedVendorsSection = () => {
 };
 
 export default TopRatedVendorsSection;
+

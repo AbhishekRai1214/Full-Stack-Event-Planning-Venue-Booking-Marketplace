@@ -220,3 +220,4 @@ export const SAMPLE_BUILD_YOUR_EVENT = {
     { id: '4', category: 'Photography', name: 'Studio Lumière (2 Days)', cost: 75000 },
   ],
 };
+

@@ -69,3 +69,4 @@ export const BrowseByEvent = () => {
 };
 
 export default BrowseByEvent;
+
