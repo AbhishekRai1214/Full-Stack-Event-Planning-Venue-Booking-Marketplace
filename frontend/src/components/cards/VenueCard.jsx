@@ -111,3 +111,4 @@ export const VenueCard = ({
 };
 
 export default VenueCard;
+

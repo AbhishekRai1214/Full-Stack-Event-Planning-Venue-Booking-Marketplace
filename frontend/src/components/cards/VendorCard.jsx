@@ -83,3 +83,4 @@ export const VendorCard = ({ vendor = {} }) => {
 };
 
 export default VendorCard;
+

@@ -41,3 +41,4 @@ export const LoadingScreen = ({ message = 'Loading VenueAura...' }) => {
 };
 
 export default Spinner;
+
