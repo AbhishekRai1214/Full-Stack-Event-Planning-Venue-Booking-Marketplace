@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
 import HomePage from '@/pages/HomePage';
+import VenueListingPage from '@/pages/VenueListingPage';
+import VenueDetailPage from '@/pages/VenueDetailPage';
 import Button from '@/components/common/Button';
 import Badge from '@/components/common/Badge';
 import Spinner from '@/components/common/Spinner';
@@ -169,15 +171,9 @@ function App() {
         <Route path="/design-system" element={<DesignSystemShowcase />} />
 
         {/* Other Platform Routes */}
-        <Route
-          path="/venues"
-          element={
-            <PlaceholderPage
-              title="Venues Marketplace"
-              description="Phase 4 will implement the full venue directory, search filters, and venue detail pages."
-            />
-          }
-        />
+        {/* Phase 4 Venue Marketplace */}
+        <Route path="/venues" element={<VenueListingPage />} />
+        <Route path="/venues/:id" element={<VenueDetailPage />} />
         <Route
           path="/vendors"
           element={

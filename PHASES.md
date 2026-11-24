@@ -12,7 +12,7 @@ Track the development progress of VenueAura. Each phase is committed separately 
 | **Phase 1** | Project Setup (MERN init) | ✅ Complete | `chore: initialize MERN stack project` |
 | **Phase 2** | UI Foundation (design system) | ✅ Complete | `feat: implement reusable UI design system` |
 | **Phase 3** | Home Page | ✅ Complete | `feat: build responsive VenueAura homepage` |
-| **Phase 4** | Venue Marketplace | ⬜ Pending | `feat: implement venue discovery marketplace` |
+| **Phase 4** | Venue Marketplace | ✅ Complete | `feat: implement venue discovery marketplace` |
 | **Phase 5** | Vendor Marketplace | ⬜ Pending | `feat: implement vendor marketplace` |
 | **Phase 6** | Authentication & Authorization | ⬜ Pending | `feat: implement JWT authentication and RBAC` |
 | **Phase 7** | Customer & Vendor Dashboards | ⬜ Pending | `feat: implement customer and vendor dashboards` |
@@ -243,7 +243,48 @@ User, Venue, Vendor, Booking, Payment, Event, Budget, Review, Contact, Notificat
 
 ---
 
-## Phases 4–15
+## Phase 4 – Venue Marketplace ✅
+
+**Status:** Complete  
+**Date:** 2026-11-25
+
+### What Was Implemented
+
+1. **Backend Venue Domain (`backend/src/modules/venues/`):**
+   - **`venue.model.js`**: Mongoose schema with embedded images, location coordinates, eventTypes array, capacity (min/max), pricing (starting & per-plate), facilities, ratings, availability, and compound indexes (`{ status: 1, 'location.city': 1, 'pricing.startingPrice': 1 }`, text index).
+   - **`venue.validation.js`**: Zod validation schemas for query parameters (`listVenuesQuerySchema`) with type transformations, and body validations (`createVenueSchema`, `updateVenueSchema`).
+   - **`venue.repository.js`**: Data access abstraction using `.lean()`, pagination, sorting, text search, and document counting.
+   - **`venue.service.js`**: Business logic layer managing dynamic MongoDB filters, slug generation, sorting rules, and ownership authorization.
+   - **`venue.controller.js`**: HTTP handlers utilizing `asyncHandler` and standardized `ApiResponse`.
+   - **`venue.routes.js`**: REST routes (`GET /api/v1/venues`, `GET /api/v1/venues/:idOrSlug`, `POST /api/v1/venues`, `PATCH /api/v1/venues/:id`, `DELETE /api/v1/venues/:id`) with JWT auth & RBAC middleware.
+   - Mounted in `backend/src/app.js` under `/api/v1/venues`.
+   - **`backend/src/jobs/seedVenues.js`**: Comprehensive database seed script with 8 luxury heritage palaces, convention centers, and beachfront venues.
+
+2. **Frontend Venue Marketplace Features (`frontend/src/features/venues/`):**
+   - **`venuesApi.js`**: Axios client with query parameter serialization and seamless fallback handling for standalone/offline operation.
+   - **`venuesSlice.js`**: Redux Toolkit slice managing venue lists, active filters, selected venue details, pagination metadata, and wishlist bookmarks.
+   - Mounted in `frontend/src/app/store.js` as `venues` state slice.
+   - **`VenueFilters.jsx`**: Collapsible filter sidebar with City dropdown, Event Type selector, Space Style selector, Price Range selector, Guest Capacity pills, Rating threshold, and Reset button.
+   - **`VenueGallery.jsx`**: Image showcase featuring main 16:9 view, image counter, next/previous controls, and clickable thumbnail filmstrip.
+   - **`VenueFacilities.jsx`**: Grid displaying all verified amenities with icon checks.
+   - **`VenueBookingCard.jsx`**: Sticky booking/reservation calculator card with live date selector, interactive guest count range slider, estimated catering & venue total calculation, 25% advance requirement breakdown, and interactive "Inquire with Venue" modal with form validation.
+
+3. **Pages & Routing:**
+   - **`VenueListingPage.jsx`**: Responsive venue directory with top search bar, sort dropdown, results count, active filters, mobile slide-over drawer, responsive 3-column venue card grid, and multi-page pagination.
+   - **`VenueDetailPage.jsx`**: Complete venue profile with breadcrumbs, badges, title, location, gallery, specifications grid, description, amenities list, verified review quotes, and sticky booking card.
+   - Registered `/venues` and `/venues/:id` in `frontend/src/App.jsx`.
+
+### Verification Results
+| Check | Result |
+|---|---|
+| `backend syntax check` | ✅ `node -e "require('./src/app')"` loaded with 0 errors |
+| `npm run build` (frontend) | ✅ 1465 modules built cleanly in 21.5s (0 errors) |
+| Filtering & Search | ✅ City, budget, capacity, space style, and keyword search operational |
+| Responsive Layout | ✅ Mobile slide-over drawer, sticky booking card, thumbnail gallery |
+
+---
+
+## Phases 5–15
 
 See phase descriptions in [architecture.md](./docs/architecture.md).
 

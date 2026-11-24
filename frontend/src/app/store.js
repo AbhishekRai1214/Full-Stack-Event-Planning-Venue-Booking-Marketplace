@@ -17,23 +17,11 @@ import { configureStore } from '@reduxjs/toolkit';
  * - Phase 10: compareSlice
  */
 
-// Slices will be imported and added here as they are implemented
-// import authReducer from '@/features/auth/authSlice';
-// import venuesReducer from '@/features/venues/venuesSlice';
-// import vendorsReducer from '@/features/vendors/vendorsSlice';
-// import budgetReducer from '@/features/budget/budgetSlice';
-// import compareReducer from '@/features/compare/compareSlice';
-// import notificationsReducer from '@/features/notifications/notificationsSlice';
+import venuesReducer from '@/features/venues/venuesSlice';
 
 export const store = configureStore({
   reducer: {
-    // Reducers added per phase:
-    // auth: authReducer,          // Phase 6
-    // venues: venuesReducer,      // Phase 4
-    // vendors: vendorsReducer,    // Phase 5
-    // budget: budgetReducer,      // Phase 9
-    // compare: compareReducer,    // Phase 10
-    // notifications: notificationsReducer, // Phase 11
+    venues: venuesReducer,
   },
 
   middleware: getDefaultMiddleware =>

@@ -35,16 +35,7 @@ const { errorHandler } = require('./middleware/errorHandler');
 // ─── Module Routes (uncomment as implemented in later phases) ─────────────────
 // const authRoutes = require('./modules/auth/auth.routes');
 // const userRoutes = require('./modules/users/user.routes');
-// const venueRoutes = require('./modules/venues/venue.routes');
-// const vendorRoutes = require('./modules/vendors/vendor.routes');
-// const eventRoutes = require('./modules/events/event.routes');
-// const bookingRoutes = require('./modules/bookings/booking.routes');
-// const paymentRoutes = require('./modules/payments/payment.routes');
-// const budgetRoutes = require('./modules/budget/budget.routes');
-// const reviewRoutes = require('./modules/reviews/review.routes');
-// const notificationRoutes = require('./modules/notifications/notification.routes');
-// const adminRoutes = require('./modules/admin/admin.routes');
-// const contactRoutes = require('./modules/contact/contact.routes');
+const venueRoutes = require('./modules/venues/venue.routes');
 
 const app = express();
 
@@ -175,7 +166,7 @@ const apiRouter = express.Router();
 // Mount routes as they are implemented in each phase:
 // apiRouter.use('/auth', authRoutes);           // Phase 6
 // apiRouter.use('/users', userRoutes);          // Phase 6
-// apiRouter.use('/venues', venueRoutes);        // Phase 4
+apiRouter.use('/venues', venueRoutes);        // Phase 4
 // apiRouter.use('/vendors', vendorRoutes);      // Phase 5
 // apiRouter.use('/events', eventRoutes);        // Phase 7
 // apiRouter.use('/bookings', bookingRoutes);    // Phase 8
