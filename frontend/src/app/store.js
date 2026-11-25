@@ -20,12 +20,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import venuesReducer from '@/features/venues/venuesSlice';
 import vendorsReducer from '@/features/vendors/vendorsSlice';
 import authReducer from '@/features/auth/authSlice';
+import eventsReducer from '@/features/events/eventsSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     venues: venuesReducer,
     vendors: vendorsReducer,
+    events: eventsReducer,
   },
 
   middleware: getDefaultMiddleware =>

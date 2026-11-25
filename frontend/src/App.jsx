@@ -6,6 +6,8 @@ import VenueListingPage from '@/pages/VenueListingPage';
 import VenueDetailPage from '@/pages/VenueDetailPage';
 import VendorListingPage from '@/pages/VendorListingPage';
 import VendorDetailPage from '@/pages/VendorDetailPage';
+import EventsPage from '@/pages/EventsPage';
+import EventDetailPage from '@/pages/EventDetailPage';
 import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
 import ProtectedRoute from '@/components/common/ProtectedRoute';
@@ -182,6 +184,22 @@ function App() {
         {/* Phase 5 Vendor Marketplace */}
         <Route path="/vendors" element={<VendorListingPage />} />
         <Route path="/vendors/:id" element={<VendorDetailPage />} />
+        <Route
+          path="/events"
+          element={
+            <ProtectedRoute>
+              <EventsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/events/:id"
+          element={
+            <ProtectedRoute>
+              <EventDetailPage />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/compare"
           element={

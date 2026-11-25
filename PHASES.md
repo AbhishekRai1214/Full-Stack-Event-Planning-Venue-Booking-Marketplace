@@ -370,7 +370,60 @@ User, Venue, Vendor, Booking, Payment, Event, Budget, Review, Contact, Notificat
 
 ---
 
-## Phases 7–15
+## Phase 7 – Event Management ✅
+
+**Status:** Complete  
+**Date:** 2026-11-25
+
+### What Was Implemented
+
+1. **Backend Event Module (`backend/src/modules/events/`):**
+   - **`event.model.js`**:
+     - Fields: `owner` (ObjectId ref User), `name`, `eventType` (wedding, birthday, engagement, corporate, etc.), `date`, `endDate`, `city`, `guestCount`, `estimatedBudget`, `venue` (ref Venue), `vendors[]` (ref Vendor with category & shortlist status), `checklist[]` (task title, category, isCompleted, dueDate), `notes`, `status` (`planning`, `confirmed`, `completed`, `cancelled`), `coverImage`.
+     - Indexes on `{ owner: 1, date: -1 }` and `eventType`.
+   - **`event.validation.js`**:
+     - Zod schemas for `createEventSchema`, `updateEventSchema`, and `addChecklistItemSchema`.
+   - **`event.repository.js`**:
+     - Full data access layer with Mongoose population for linked venue and vendors, checklist array mutation methods (`addChecklistItem`, `toggleChecklistItem`, `deleteChecklistItem`).
+   - **`event.service.js`**:
+     - Enforces strict resource ownership (`event.owner === user.id` or `user.role === 'ADMIN'`).
+     - Auto-seeds helpful starter checklist tasks (e.g., guest list, photographer booking, menu tasting, decor concept) when a new event is created.
+   - **`event.controller.js`**:
+     - Standard REST endpoints responding with uniform `ApiResponse` payloads.
+   - **`event.routes.js`**:
+     - Protected by `authenticate` middleware.
+     - Endpoints: `POST /api/v1/events`, `GET /api/v1/events`, `GET /api/v1/events/:id`, `PATCH /api/v1/events/:id`, `DELETE /api/v1/events/:id`, `POST /api/v1/events/:id/tasks`, `PATCH /api/v1/events/:id/tasks/:itemId/toggle`, `DELETE /api/v1/events/:id/tasks/:itemId`.
+   - Mounted in `backend/src/app.js` under `/api/v1/events`.
+
+2. **Frontend Event Management (`frontend/src/`):**
+   - **`eventsApi.js` & `eventsSlice.js`**:
+     - Redux Toolkit state slice handling asynchronous API calls, task toggles, creation, deletion, and local fallback storage for offline resilience.
+     - Registered in `frontend/src/app/store.js` as `events` reducer.
+   - **`EventCard.jsx`**:
+     - High-impact visual card displaying countdown days, planning progress bar (completed vs total tasks), budget, guest count, city, and status badge.
+   - **`EventChecklist.jsx`**:
+     - Interactive task manager allowing hosts to toggle tasks as complete with one click, add custom tasks categorized by department (Venue, Catering, Photography, etc.), and remove finished tasks.
+   - **`CreateEventModal.jsx`**:
+     - Smooth popover dialog for creating new celebrations with date pickers, expected guest counters, budget, and planning notes.
+   - **`EventsPage.jsx`**:
+     - Central event management dashboard featuring aggregated metrics (Total Events, Active in-planning, Total guests), responsive celebration grid, and quick creation action.
+   - **`EventDetailPage.jsx`**:
+     - Comprehensive planning workspace showcasing countdown banner, linked venue card with quick links to venue specs, planning checklist, and notes.
+   - **Navigation & Routing**:
+     - Added "Events" link in `Navbar.jsx`.
+     - Protected routes `/events` and `/events/:id` wired in `frontend/src/App.jsx`.
+
+### Verification Results
+| Check | Result |
+|---|---|
+| `backend app syntax check` | ✅ `node -e "require('./src/app')"` loaded with 0 errors |
+| `event schema validation` | ✅ Zod validation test executed cleanly |
+| `npm run build` (frontend) | ✅ 1486 modules built cleanly in 7.7s (0 errors) |
+| Protected Routing | ✅ `/events` guarded by `ProtectedRoute` |
+
+---
+
+## Phases 8–15
 
 See phase descriptions in [architecture.md](./docs/architecture.md).
 
