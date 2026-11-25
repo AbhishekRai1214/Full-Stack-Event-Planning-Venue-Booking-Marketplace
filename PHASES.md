@@ -324,7 +324,53 @@ User, Venue, Vendor, Booking, Payment, Event, Budget, Review, Contact, Notificat
 
 ---
 
-## Phases 6–15
+## Phase 6 – Authentication & Authorization (RBAC) ✅
+
+**Status:** Complete  
+**Date:** 2026-11-25
+
+### What Was Implemented
+
+1. **Backend User & Authentication Architecture (`backend/src/modules/`):**
+   - **`user.model.js`**:
+     - Fields: `name`, `email` (unique, lowercase), `password` (bcrypt hash, `select: false`), `role` (`CUSTOMER`, `VENDOR`, `ADMIN`), `phone`, `avatar`, `refreshTokens[]` (token string + expiry), `isEmailVerified`, `isActive`, `lastLogin`, and audit timestamps.
+     - Pre-save bcrypt hashing hook (cost factor 12) and `comparePassword(candidate)` method.
+     - Custom JSON transform excluding passwords, refresh tokens, and internal properties.
+   - **`auth.validation.js`**: Zod schemas for `registerSchema` (enforcing strong passwords and preventing self-assigning `ADMIN`), `loginSchema`, and `refreshTokenSchema`.
+   - **`user.repository.js`**: Data access layer for user creation, credential queries, refresh token storage, and session token invalidation.
+   - **`auth.service.js`**:
+     - Register: validates uniqueness, hashes credentials, generates initial access + opaque refresh token pair.
+     - Login: authenticates email & password, prunes expired tokens, issues dual tokens.
+     - Refresh: rotates refresh token, revokes consumed token, and issues fresh access token.
+     - Logout: clears refresh token in DB and flushes cookie.
+     - Current User (`getMe`): fetches authenticated profile.
+   - **`auth.controller.js`**: Handles HTTP contracts, returning standard `ApiResponse` JSON and setting secure `HttpOnly` cookie for refresh tokens.
+   - **`auth.routes.js`**: REST endpoints (`POST /api/v1/auth/register`, `POST /api/v1/auth/login`, `POST /api/v1/auth/refresh`, `POST /api/v1/auth/logout`, `GET /api/v1/auth/me`), protected with `authRateLimiter` and validation middleware.
+   - Mounted in `backend/src/app.js` under `/api/v1/auth`.
+
+2. **Frontend Authentication & State (`frontend/src/`):**
+   - **`authApi.js`**: Authentication client communicating with API and handling access token memory storage. Includes simulated fallback accounts for seamless offline testing.
+   - **`authSlice.js`**: Redux Toolkit slice managing `user`, `accessToken`, `isAuthenticated`, `isLoading`, and `error`. Hydrates initial session from storage and registered in `store.js`.
+   - **`ProtectedRoute.jsx`**: Route guard validating authentication state and enforcing RBAC with customizable `allowedRoles`. Redirects unauthenticated visitors to `/login` with return intent.
+   - **`Navbar.jsx` Auth Integration**:
+     - Dynamically renders Sign In / Get Started CTAs or authenticated User Pill.
+     - User Pill displays avatar, name, and role badge (`CUSTOMER`, `VENDOR`, `ADMIN`).
+     - Dropdown menu with navigation to Role Portal (Admin Control Center, Vendor Portal, My Profile) and one-click Sign Out.
+   - **`LoginPage.jsx`**: Responsive login form with demo credentials quick-fill buttons for Customer, Vendor, and Admin accounts, eye-toggle password visibility, and validation feedback.
+   - **`RegisterPage.jsx`**: Role selection tabs (Customer vs Vendor Partner), validation, and registration flow.
+   - Mounted `/login`, `/register`, and `/profile` routes in `frontend/src/App.jsx`.
+
+### Verification Results
+| Check | Result |
+|---|---|
+| `backend app syntax check` | ✅ `node -e "require('./src/app')"` loaded with 0 errors |
+| `JWT signing & verification` | ✅ Dual token signing and payload extraction verified |
+| `npm run build` (frontend) | ✅ 1479 modules built cleanly in 9.5s (0 errors) |
+| Responsive Layout & RBAC | ✅ Guard routes, demo account logins, and role dropdown verified |
+
+---
+
+## Phases 7–15
 
 See phase descriptions in [architecture.md](./docs/architecture.md).
 

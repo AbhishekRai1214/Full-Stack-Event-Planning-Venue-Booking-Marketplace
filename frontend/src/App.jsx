@@ -6,6 +6,9 @@ import VenueListingPage from '@/pages/VenueListingPage';
 import VenueDetailPage from '@/pages/VenueDetailPage';
 import VendorListingPage from '@/pages/VendorListingPage';
 import VendorDetailPage from '@/pages/VendorDetailPage';
+import LoginPage from '@/pages/LoginPage';
+import RegisterPage from '@/pages/RegisterPage';
+import ProtectedRoute from '@/components/common/ProtectedRoute';
 import Button from '@/components/common/Button';
 import Badge from '@/components/common/Badge';
 import Spinner from '@/components/common/Spinner';
@@ -215,22 +218,27 @@ function App() {
             />
           }
         />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         <Route
-          path="/login"
+          path="/profile"
           element={
-            <PlaceholderPage
-              title="Sign In"
-              description="Phase 6 will implement full JWT authentication & RBAC."
-            />
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <PlaceholderPage
-              title="Create Account"
-              description="Customer, Vendor, and Admin registration."
-            />
+            <ProtectedRoute>
+              <div className="section-container py-16">
+                <div className="max-w-2xl mx-auto bg-white p-8 rounded-card border border-border shadow-card">
+                  <h2 className="text-2xl font-serif font-bold text-text mb-4">My Account Profile</h2>
+                  <p className="text-text-muted text-sm mb-6">
+                    Manage your account settings, saved venues, and event booking history.
+                  </p>
+                  <div className="p-4 bg-primary-50 rounded-xl border border-primary-100 flex items-center gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
+                    <span className="text-xs text-text">
+                      Authenticated session active. Profile edit and booking management unlocked!
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </ProtectedRoute>
           }
         />
         <Route

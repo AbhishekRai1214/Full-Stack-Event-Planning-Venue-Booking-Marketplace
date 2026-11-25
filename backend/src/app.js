@@ -32,8 +32,8 @@ const { globalRateLimiter } = require('./middleware/rateLimiter');
 const { notFound } = require('./middleware/notFound');
 const { errorHandler } = require('./middleware/errorHandler');
 
-// ─── Module Routes (uncomment as implemented in later phases) ─────────────────
-// const authRoutes = require('./modules/auth/auth.routes');
+// ─── Module Routes ─────────────────────────────────────────────────────────────
+const authRoutes = require('./modules/auth/auth.routes');
 // const userRoutes = require('./modules/users/user.routes');
 const venueRoutes = require('./modules/venues/venue.routes');
 const vendorRoutes = require('./modules/vendors/vendor.routes');
@@ -165,7 +165,7 @@ const apiVersion = process.env.API_VERSION || 'v1';
 const apiRouter = express.Router();
 
 // Mount routes as they are implemented in each phase:
-// apiRouter.use('/auth', authRoutes);           // Phase 6
+apiRouter.use('/auth', authRoutes);           // Phase 6
 // apiRouter.use('/users', userRoutes);          // Phase 6
 apiRouter.use('/venues', venueRoutes);        // Phase 4
 apiRouter.use('/vendors', vendorRoutes);      // Phase 5
