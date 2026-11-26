@@ -10,6 +10,7 @@ import EventsPage from '@/pages/EventsPage';
 import EventDetailPage from '@/pages/EventDetailPage';
 import BookingsPage from '@/pages/BookingsPage';
 import BookingDetailPage from '@/pages/BookingDetailPage';
+import BudgetPlannerPage from '@/pages/BudgetPlannerPage';
 import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
 import ProtectedRoute from '@/components/common/ProtectedRoute';
@@ -230,10 +231,9 @@ function App() {
         <Route
           path="/budget"
           element={
-            <PlaceholderPage
-              title="Budget Planner"
-              description="Phase 9 will implement the interactive budget calculator and category tracker."
-            />
+            <ProtectedRoute>
+              <BudgetPlannerPage />
+            </ProtectedRoute>
           }
         />
         <Route

@@ -472,7 +472,47 @@ User, Venue, Vendor, Booking, Payment, Event, Budget, Review, Contact, Notificat
 
 ---
 
-## Phases 9–15
+## Phase 9 – Budget Planner & Calculator ✅
+
+**Status:** Complete  
+**Date:** 2026-11-26
+
+### What Was Implemented
+
+1. **Backend Budget Module (`backend/src/modules/budget/`):**
+   - **`budget.model.js`**:
+     - Fields: `owner` (ref User), `event` (ref Event), `name`, `totalBudget`, `currency`, `expenses[]` (category, name, estimatedAmount, actualAmount, isPaid, notes).
+     - Auto-computed fields: `totalEstimated`, `totalActual`, `remainingBudget`, and `utilizationPercent`.
+     - Pre-save hook automatically computes summary aggregates server-side, preventing client payload manipulation.
+   - **`budget.validation.js`**: Zod schemas for `createBudgetSchema`, `updateBudgetSchema`, `addExpenseItemSchema`, and `updateExpenseItemSchema`.
+   - **`budget.repository.js`**: Data access layer supporting budget plan CRUD, line-item additions, in-place updates, and array deletions using Mongoose subdocument methods.
+   - **`budget.service.js`**:
+     - Smart Auto-Presets: automatically seeds recommended allocations if empty (Venue 40%, Catering 25%, Decor 12%, Photography 8%, DJ 4%, Makeup 4%, Clothing 4%, Invitations 3%).
+     - Resource ownership guards ensuring only the budget owner or Admin can view/modify budgets.
+   - **`budget.controller.js`** & **`budget.routes.js`**:
+     - Full REST API mounted at `/api/v1/budgets` with authentication and schema validation.
+   - Mounted in `backend/src/app.js` under `/api/v1/budgets`.
+
+2. **Frontend Budget Planner (`frontend/src/`):**
+   - **`budgetApi.js` & `budgetSlice.js`**: Redux Toolkit slice managing budgets, active plan selection, and expense CRUD with offline LocalStorage fallback data.
+   - Registered in Redux store at `store.js`.
+   - **`BudgetSummaryCards.jsx`**: Metric tiles displaying Total Budget, Estimated Cost, Actual Amount Paid, and Remaining Funds with dynamic over-budget alerts.
+   - **`BudgetCategoryBreakdown.jsx`**: Multi-segment progress bar and responsive category pill grid with percentage share and paid indicators.
+   - **`ExpenseTable.jsx`**: Interactive table allowing inline Paid/Pending status toggling, quick new expense drawer, and line-item deletions.
+   - **`CreateBudgetModal.jsx`**: Modal dialog for creating new budgets with instant preset buttons (Intimate Gathering ₹3L, Grand Birthday ₹6L, Classic Wedding ₹15L, Royal Destination ₹35L).
+   - **`BudgetPlannerPage.jsx`**: Central workspace with active plan dropdown switcher, summary cards, category distributions, and expense table.
+   - Wired `/budget` protected route in `App.jsx`.
+
+### Verification Results
+| Check | Result |
+|---|---|
+| Backend syntax check | ✅ App loads with 0 errors |
+| Frontend production build | ✅ 1,500 modules built cleanly in 34.7s |
+| Protected Routing | ✅ `/budget` guarded by `ProtectedRoute` |
+
+---
+
+## Phases 10–15
 
 See phase descriptions in [architecture.md](./docs/architecture.md).
 

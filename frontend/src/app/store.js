@@ -22,6 +22,7 @@ import vendorsReducer from '@/features/vendors/vendorsSlice';
 import authReducer from '@/features/auth/authSlice';
 import eventsReducer from '@/features/events/eventsSlice';
 import bookingsReducer from '@/features/bookings/bookingsSlice';
+import budgetReducer from '@/features/budget/budgetSlice';
 
 export const store = configureStore({
   reducer: {
@@ -30,6 +31,7 @@ export const store = configureStore({
     vendors: vendorsReducer,
     events: eventsReducer,
     bookings: bookingsReducer,
+    budget: budgetReducer,
   },
 
   middleware: getDefaultMiddleware =>
