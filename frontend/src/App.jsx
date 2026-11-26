@@ -8,6 +8,8 @@ import VendorListingPage from '@/pages/VendorListingPage';
 import VendorDetailPage from '@/pages/VendorDetailPage';
 import EventsPage from '@/pages/EventsPage';
 import EventDetailPage from '@/pages/EventDetailPage';
+import BookingsPage from '@/pages/BookingsPage';
+import BookingDetailPage from '@/pages/BookingDetailPage';
 import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
 import ProtectedRoute from '@/components/common/ProtectedRoute';
@@ -197,6 +199,22 @@ function App() {
           element={
             <ProtectedRoute>
               <EventDetailPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/bookings"
+          element={
+            <ProtectedRoute>
+              <BookingsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/bookings/:id"
+          element={
+            <ProtectedRoute>
+              <BookingDetailPage />
             </ProtectedRoute>
           }
         />

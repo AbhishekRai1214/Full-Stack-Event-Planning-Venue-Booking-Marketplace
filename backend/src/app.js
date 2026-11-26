@@ -38,6 +38,7 @@ const authRoutes = require('./modules/auth/auth.routes');
 const venueRoutes = require('./modules/venues/venue.routes');
 const vendorRoutes = require('./modules/vendors/vendor.routes');
 const eventRoutes = require('./modules/events/event.routes');
+const bookingRoutes = require('./modules/bookings/booking.routes');
 
 const app = express();
 
@@ -171,8 +172,7 @@ apiRouter.use('/auth', authRoutes);           // Phase 6
 apiRouter.use('/venues', venueRoutes);        // Phase 4
 apiRouter.use('/vendors', vendorRoutes);      // Phase 5
 apiRouter.use('/events', eventRoutes);        // Phase 7
-// apiRouter.use('/events', eventRoutes);        // Phase 7
-// apiRouter.use('/bookings', bookingRoutes);    // Phase 8
+apiRouter.use('/bookings', bookingRoutes);    // Phase 8
 // apiRouter.use('/payments', paymentRoutes);   // Phase 13
 // apiRouter.use('/budgets', budgetRoutes);     // Phase 9
 // apiRouter.use('/reviews', reviewRoutes);     // Phase 11

@@ -423,7 +423,56 @@ User, Venue, Vendor, Booking, Payment, Event, Budget, Review, Contact, Notificat
 
 ---
 
-## Phases 8–15
+## Phase 8 – Booking Workflow & State Machine ✅
+
+**Status:** Complete  
+**Date:** 2026-11-26
+
+### What Was Implemented
+
+1. **Backend Booking Module (`backend/src/modules/bookings/`):**
+   - **`booking.model.js`**:
+     - Fields: `bookingNumber` (auto-generated: `VA-YYYYMMDD-XXXXX`), `customer` (ObjectId ref User), `bookingType` (`venue` | `vendor`), `venue` / `vendor` (conditional refs), `event` (name, type, date, guestCount), `pricing` (baseAmount, taxes, totalAmount, advanceRequired, advancePaid, currency), `status` (state machine enum), `notes`, `vendorNotes`, `cancellation` (cancelledBy, reason, cancelledAt, refundAmount, refundStatus), `payment`.
+     - Compound indexes: `{ customer: 1, createdAt: -1 }`, `{ venue: 1, 'event.date': 1 }`, `{ vendor: 1, 'event.date': 1 }`.
+   - **`booking.validation.js`**: Zod schemas for `createVenueBookingSchema`, `createVendorBookingSchema`, `updateStatusSchema`, and `cancelBookingSchema`.
+   - **`booking.repository.js`**: Data access layer including availability conflict detection (`findConflictingVenueBooking`), customer/vendor-owner queries, and status aggregation.
+   - **`booking.service.js`** (core state machine logic):
+     - **Venue bookings**: Availability check before creation (409 Conflict if same venue/date already has an active booking), 18% GST calculation, 30% advance requirement auto-computation.
+     - **Vendor bookings**: Enquiry-based creation (no date exclusivity).
+     - **`updateStatus`**: Validates transitions against `BOOKING_STATUS_TRANSITIONS` lookup; enforces role permissions (CUSTOMER → cancel only; VENDOR → confirm/reject/complete; ADMIN → any).
+     - **`cancelBooking`**: Sets `cancellation` subdocument with actor, reason, timestamp, and refund status.
+   - **`booking.controller.js`** and **`booking.routes.js`**:
+     - `POST /api/v1/bookings/venues` (CUSTOMER only)
+     - `POST /api/v1/bookings/vendors` (CUSTOMER only)
+     - `GET /api/v1/bookings/my` (authenticated)
+     - `GET /api/v1/bookings/:id` (owner or ADMIN)
+     - `PATCH /api/v1/bookings/:id/status` (VENDOR or ADMIN)
+     - `POST /api/v1/bookings/:id/cancel` (authenticated with ownership check)
+     - `GET /api/v1/bookings` (ADMIN only)
+   - Mounted in `backend/src/app.js` under `/api/v1/bookings`.
+
+2. **Frontend Booking Management (`frontend/src/`):**
+   - **`bookingsApi.js` & `bookingsSlice.js`**: Redux Toolkit slice with async thunks for fetching, creating, and cancelling bookings; rich LocalStorage mock fallback with 3 realistic seed bookings.
+   - Registered in `store.js` as `bookings` reducer.
+   - **`BookingStatusBadge.jsx`**: Semantic colour-coded status badge mapping all 7 booking states.
+   - **`BookingCard.jsx`**: Compact booking row card with cover image, booking number, event details, pricing summary, advance payment progress bar, and inline cancellation modal.
+   - **`BookingTimeline.jsx`**: Visual state machine progress tracker (Enquiry → Confirmed → Advance Paid → Fully Paid → Completed) with active-step highlighting and cancelled/rejected special states.
+   - **`BookingsPage.jsx`**: Customer bookings dashboard with tab filters (All / Active / Completed / Cancelled) and summary stats.
+   - **`BookingDetailPage.jsx`**: Full booking workspace showing timeline, event details panel, pricing breakdown with payment progress bar, vendor/customer notes, cancellation history, and action buttons.
+   - Navbar updated to include "Bookings" link.
+   - Protected routes `/bookings` and `/bookings/:id` wired in `App.jsx`.
+
+### Verification Results
+| Check | Result |
+|---|---|
+| Backend app syntax | ✅ `node -e "require('./src/app')"` loaded with 0 errors |
+| Booking schema validation | ✅ Zod + state machine constants verified |
+| `npm run build` (frontend) | ✅ 1493 modules built in 21.2s (0 errors) |
+| Protected Routes | ✅ `/bookings` and `/bookings/:id` guarded by `ProtectedRoute` |
+
+---
+
+## Phases 9–15
 
 See phase descriptions in [architecture.md](./docs/architecture.md).
 

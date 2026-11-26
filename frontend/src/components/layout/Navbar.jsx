@@ -60,7 +60,7 @@ export const Navbar = () => {
     { name: 'Venues', path: '/venues' },
     { name: 'Vendors', path: '/vendors' },
     { name: 'Events', path: '/events' },
-    { name: 'Compare', path: '/compare' },
+    { name: 'Bookings', path: '/bookings' },
     { name: 'Budget Planner', path: '/budget' },
     { name: 'About', path: '/about' },
     { name: 'Contact', path: '/contact' },
