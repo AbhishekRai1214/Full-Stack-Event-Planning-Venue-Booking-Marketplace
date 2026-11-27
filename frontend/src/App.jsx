@@ -12,6 +12,7 @@ import BookingsPage from '@/pages/BookingsPage';
 import BookingDetailPage from '@/pages/BookingDetailPage';
 import BudgetPlannerPage from '@/pages/BudgetPlannerPage';
 import ComparePage from '@/pages/ComparePage';
+import ContactPage from '@/pages/ContactPage';
 import CompareBar from '@/features/compare/components/CompareBar';
 import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
@@ -239,15 +240,7 @@ function App() {
             />
           }
         />
-        <Route
-          path="/contact"
-          element={
-            <PlaceholderPage
-              title="Contact Us"
-              description="Phase 11 will integrate contact inquiries with MongoDB."
-            />
-          }
-        />
+        <Route path="/contact" element={<ContactPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route

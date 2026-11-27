@@ -550,7 +550,45 @@ User, Venue, Vendor, Booking, Payment, Event, Budget, Review, Contact, Notificat
 
 ---
 
-## Phases 11–15
+## Phase 11 – Reviews, Notifications & Contact Inquiries ✅
+
+**Status:** Complete  
+**Date:** 2026-11-27
+
+### What Was Implemented
+
+1. **Backend Reviews Module (`backend/src/modules/reviews/`):**
+   - **`review.model.js`**: Fields for `author` (ref User), `targetType` (venue/vendor), `venue`, `vendor`, `booking` (one review per booking constraint), `rating` (1–5), `title`, `comment`, `isVerified`, and `ownerResponse` (comment, respondedAt).
+   - **`review.validation.js`**: Zod schemas for review submission and host replies.
+   - **`review.service.js`**: Review creation and owner response posting (enforcing VENDOR or ADMIN permissions).
+   - Mounted at `/api/v1/reviews`.
+
+2. **Backend Notifications Module (`backend/src/modules/notifications/`):**
+   - **`notification.model.js`**: Supports `booking_created`, `booking_confirmed`, `booking_cancelled`, `payment_received`, `review_posted`, `general`.
+   - **`notification.service.js`**: Fetch unread alerts, mark as read, and bulk mark all read.
+   - Mounted at `/api/v1/notifications`.
+
+3. **Backend Contact Module (`backend/src/modules/contact/`):**
+   - **`contact.model.js`**: Stores customer/partner inquiries with status (`new`, `read`, `replied`, `closed`) and IP logging for anti-spam.
+   - Protected by `contactRateLimiter` (3 submissions per hour per IP) and mounted at `/api/v1/contact`.
+
+4. **Frontend Integrations (`frontend/src/`):**
+   - **`phase11Api.js`**: Unified API client for reviews, notifications, and contact inquiries.
+   - **`NotificationBell.jsx`**: Real-time notification bell dropdown in `Navbar.jsx` with unread count badge, animated popover list, and one-click "Mark all read".
+   - **`ReviewsSection.jsx`**: Reusable verified review feed with rating stats, feedback cards, host management replies, and an interactive "Write a Review" modal with star rating picker.
+   - **`ContactPage.jsx`**: Dedicated support and partner onboarding page with office address, telephone hotline, hours, dynamic topic dropdown, validation, and inquiry submission feedback banner.
+   - Routed `/contact` in `App.jsx`.
+
+### Verification Results
+| Check | Result |
+|---|---|
+| Backend syntax check | ✅ All 3 modules loaded with 0 errors |
+| Frontend production build | ✅ 1,508 modules built cleanly in 25.9s |
+| Rate limiting & validation | ✅ Strict Zod and express-rate-limit active |
+
+---
+
+## Phases 12–15
 
 See phase descriptions in [architecture.md](./docs/architecture.md).
 

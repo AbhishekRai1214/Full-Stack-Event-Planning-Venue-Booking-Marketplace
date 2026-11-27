@@ -40,6 +40,9 @@ const vendorRoutes = require('./modules/vendors/vendor.routes');
 const eventRoutes = require('./modules/events/event.routes');
 const bookingRoutes = require('./modules/bookings/booking.routes');
 const budgetRoutes = require('./modules/budget/budget.routes');
+const reviewRoutes = require('./modules/reviews/review.routes');
+const notificationRoutes = require('./modules/notifications/notification.routes');
+const contactRoutes = require('./modules/contact/contact.routes');
 
 const app = express();
 
@@ -175,10 +178,9 @@ apiRouter.use('/vendors', vendorRoutes);      // Phase 5
 apiRouter.use('/events', eventRoutes);        // Phase 7
 apiRouter.use('/bookings', bookingRoutes);    // Phase 8
 apiRouter.use('/budgets', budgetRoutes);      // Phase 9
-// apiRouter.use('/reviews', reviewRoutes);     // Phase 11
-// apiRouter.use('/notifications', notificationRoutes); // Phase 11
-// apiRouter.use('/admin', adminRoutes);         // Phase 12
-// apiRouter.use('/contact', contactRoutes);    // Phase 11
+apiRouter.use('/reviews', reviewRoutes);      // Phase 11
+apiRouter.use('/notifications', notificationRoutes); // Phase 11
+apiRouter.use('/contact', contactRoutes);    // Phase 11
 
 // API info endpoint
 apiRouter.get('/', (req, res) => {

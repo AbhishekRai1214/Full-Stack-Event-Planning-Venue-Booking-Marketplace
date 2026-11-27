@@ -13,6 +13,7 @@ import {
   Shield,
   Briefcase,
 } from 'lucide-react';
+import NotificationBell from '@/components/common/NotificationBell';
 import Button from '@/components/common/Button';
 import Badge from '@/components/common/Badge';
 import {
@@ -119,6 +120,8 @@ export const Navbar = () => {
           >
             <Heart className="w-5 h-5" />
           </Link>
+
+          <NotificationBell />
 
           {isAuthenticated && user ? (
             <div className="relative">
