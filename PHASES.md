@@ -512,7 +512,45 @@ User, Venue, Vendor, Booking, Payment, Event, Budget, Review, Contact, Notificat
 
 ---
 
-## Phases 10–15
+## Phase 10 – Comparison Tool (Side-by-Side Venues & Vendors) ✅
+
+**Status:** Complete  
+**Date:** 2026-11-27
+
+### What Was Implemented
+
+1. **Comparison State Architecture (`frontend/src/features/compare/`):**
+   - **`compareSlice.js`**: Redux Toolkit slice managing shortlisted `venueIds` and `vendorIds` with an automatic capacity cap of 4 items per category.
+   - Integrated persistent synchronization with browser `localStorage` (`venueaura_compare_venues`, `venueaura_compare_vendors`) to maintain user shortlists across tabs and refreshes.
+   - Registered `compare` reducer in `frontend/src/app/store.js`.
+   - **`CompareBar.jsx`**: Floating sticky bottom drawer that smoothly slides up whenever any item is shortlisted, previewing thumbnails with remove buttons, a count indicator, and an instant "Compare Now" CTA.
+
+2. **Card Integrations:**
+   - **`VenueCard.jsx`**: Added dedicated comparison toggle scale icon button with active/shortlisted visual state.
+   - **`VendorCard.jsx`**: Added dedicated compare toggle icon button on vendor cards.
+
+3. **Side-by-Side Evaluation Matrix (`frontend/src/pages/ComparePage.jsx`):**
+   - **`VenueCompareTable.jsx`**:
+     - Up to 4 venues side-by-side.
+     - Direct comparison rows: Cover preview, rental starting price, per-plate veg/non-veg pricing, guest capacity (min-max), venue classification, and review scores.
+     - Full amenities matrix (Valet parking, AC, bridal dressing room, in-house catering, power backup, alcohol permitted, DJ permitted, guest rooms) with visual Check vs Cross badges.
+   - **`VendorCompareTable.jsx`**:
+     - Up to 4 event vendors side-by-side.
+     - Category, starting package cost, industry experience, review rating, service coverage areas, and available tiers.
+   - Header with category tab switchers (Venues vs Vendors) and total shortlisted counter.
+   - Empty states with call-to-actions to explore venues and vendors.
+   - Routed `/compare` in `App.jsx` and added "Compare" navigation tab in `Navbar.jsx`.
+
+### Verification Results
+| Check | Result |
+|---|---|
+| Backend syntax check | ✅ App loads with 0 errors |
+| Frontend production build | ✅ 1,505 modules built cleanly in 24.8s |
+| Redux state & localStorage sync | ✅ Verified shortlist cap of 4 items and state persistence |
+
+---
+
+## Phases 11–15
 
 See phase descriptions in [architecture.md](./docs/architecture.md).
 

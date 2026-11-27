@@ -1,12 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Briefcase, Award, CheckCircle2 } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { MapPin, Briefcase, Award, CheckCircle2, Scale } from 'lucide-react';
 import Badge from '@/components/common/Badge';
 import Rating from '@/components/common/Rating';
 import Button from '@/components/common/Button';
+import { toggleCompareVendor, selectCompareVendors } from '@/features/compare/compareSlice';
 import { formatCurrency } from '@/utils';
 
 export const VendorCard = ({ vendor = {} }) => {
+  const dispatch = useDispatch();
+  const compareVendorIds = useSelector(selectCompareVendors);
+
   const {
     id = '1',
     name = 'Studio Lumière Photography',
@@ -19,6 +24,8 @@ export const VendorCard = ({ vendor = {} }) => {
     reviewsCount = 88,
     isVerified = true,
   } = vendor;
+
+  const isCompared = compareVendorIds.includes(String(id));
 
   return (
     <div className="group card overflow-hidden border border-border p-4 flex gap-4 hover:shadow-card-hover transition-all duration-300">
@@ -35,6 +42,23 @@ export const VendorCard = ({ vendor = {} }) => {
             <CheckCircle2 className="w-3.5 h-3.5 fill-primary text-white" />
           </span>
         )}
+
+        {/* Compare Toggle Pill */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            dispatch(toggleCompareVendor(id));
+          }}
+          className={`absolute top-1 right-1 w-6 h-6 rounded-full backdrop-blur-xs flex items-center justify-center transition-all ${
+            isCompared
+              ? 'bg-primary text-white scale-105 shadow-xs'
+              : 'bg-white/80 text-neutral-600 hover:text-primary hover:bg-white'
+          }`}
+          title={isCompared ? 'Remove from compare' : 'Add to compare'}
+        >
+          <Scale className="w-3 h-3" />
+        </button>
       </div>
 
       {/* Details */}

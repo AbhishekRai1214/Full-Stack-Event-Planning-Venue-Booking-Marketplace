@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Users, Heart, CheckCircle2, IndianRupee } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { MapPin, Users, Heart, CheckCircle2, IndianRupee, Scale } from 'lucide-react';
 import Badge from '@/components/common/Badge';
 import Rating from '@/components/common/Rating';
 import Button from '@/components/common/Button';
+import { toggleCompareVenue, selectCompareVenues } from '@/features/compare/compareSlice';
 import { formatCurrency } from '@/utils';
 
 export const VenueCard = ({
@@ -11,6 +13,9 @@ export const VenueCard = ({
   isSaved = false,
   onSaveToggle,
 }) => {
+  const dispatch = useDispatch();
+  const compareVenueIds = useSelector(selectCompareVenues);
+
   const {
     id = '1',
     name = 'The Grand Heritage Palace',
@@ -24,6 +29,8 @@ export const VenueCard = ({
     isVerified = true,
     venueType = 'Banquet Hall',
   } = venue;
+
+  const isCompared = compareVenueIds.includes(String(id));
 
   return (
     <div className="group card overflow-hidden border border-border flex flex-col hover:-translate-y-1 transition-all duration-300">
@@ -48,17 +55,39 @@ export const VenueCard = ({
           )}
         </div>
 
-        {/* Save/Wishlist Heart Button */}
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            onSaveToggle?.(id);
-          }}
-          className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center text-neutral-600 hover:text-rose-500 hover:scale-110 active:scale-95 transition-all shadow-xs"
-          aria-label="Save venue"
-        >
-          <Heart className={`w-4 h-4 ${isSaved ? 'fill-rose-500 text-rose-500' : ''}`} />
-        </button>
+        {/* Right Action Icons: Save & Compare */}
+        <div className="absolute top-3 right-3 flex items-center gap-1.5">
+          {/* Compare Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              dispatch(toggleCompareVenue(id));
+            }}
+            className={`w-8 h-8 rounded-full backdrop-blur-xs flex items-center justify-center transition-all shadow-xs ${
+              isCompared
+                ? 'bg-primary text-white scale-105'
+                : 'bg-white/90 text-neutral-600 hover:text-primary hover:scale-110 active:scale-95'
+            }`}
+            title={isCompared ? 'Remove from compare' : 'Add to compare'}
+            aria-label="Compare venue"
+          >
+            <Scale className="w-4 h-4" />
+          </button>
+
+          {/* Save/Wishlist Heart Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              onSaveToggle?.(id);
+            }}
+            className="w-8 h-8 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center text-neutral-600 hover:text-rose-500 hover:scale-110 active:scale-95 transition-all shadow-xs"
+            aria-label="Save venue"
+          >
+            <Heart className={`w-4 h-4 ${isSaved ? 'fill-rose-500 text-rose-500' : ''}`} />
+          </button>
+        </div>
 
         {/* Rating Floating Tag */}
         <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-xs px-2.5 py-1 rounded-md shadow-xs flex items-center">

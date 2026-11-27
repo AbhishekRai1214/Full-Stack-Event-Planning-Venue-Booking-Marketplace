@@ -11,6 +11,8 @@ import EventDetailPage from '@/pages/EventDetailPage';
 import BookingsPage from '@/pages/BookingsPage';
 import BookingDetailPage from '@/pages/BookingDetailPage';
 import BudgetPlannerPage from '@/pages/BudgetPlannerPage';
+import ComparePage from '@/pages/ComparePage';
+import CompareBar from '@/features/compare/components/CompareBar';
 import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
 import ProtectedRoute from '@/components/common/ProtectedRoute';
@@ -219,15 +221,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/compare"
-          element={
-            <PlaceholderPage
-              title="Compare Venues & Vendors"
-              description="Phase 10 will deliver side-by-side comparison tables."
-            />
-          }
-        />
+        <Route path="/compare" element={<ComparePage />} />
         <Route
           path="/budget"
           element={
@@ -292,6 +286,7 @@ function App() {
           }
         />
       </Routes>
+      <CompareBar />
     </MainLayout>
   );
 }
