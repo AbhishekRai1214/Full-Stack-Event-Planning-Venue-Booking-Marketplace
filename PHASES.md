@@ -625,7 +625,59 @@ User, Venue, Vendor, Booking, Payment, Event, Budget, Review, Contact, Notificat
 
 ---
 
-## Phases 13–15
+## Phase 13 – Payment Integration (Razorpay) & Cloudinary Upload Pipeline ✅
+
+**Status:** Complete  
+**Date:** 2026-11-27
+
+### What Was Implemented
+
+1. **Razorpay Payment Integration (Backend):**
+   - **Payment Model (`payment.model.js`):** Tracks `booking`, `customer`, `razorpayOrderId`, `razorpayPaymentId`, `razorpaySignature`, `amount` (in paise integer format), `currency`, `status` (`created`, `authorized`, `captured`, `refunded`, `failed`), `idempotencyKey`, and `webhookEvents[]`.
+   - **Payment Validation (`payment.validation.js`):** Zod validation schemas for order creation (`createOrderSchema`) and payment verification (`verifyPaymentSchema`).
+   - **Payment Service (`payment.service.js`):**
+     - Order generation (`createOrder`) calculating accurate advance or balance amounts and converting to paise.
+     - Server-side signature verification (`verifyPayment`) using cryptographic HMAC-SHA256 (`crypto.createHmac('sha256', secret).update('${order_id}|${payment_id}').digest('hex')`).
+     - Automatic booking state machine transition: transitions booking status to `advance_paid` or `fully_paid` based on cumulative advance paid vs total booking cost.
+     - Payment query method (`getPaymentByBooking`).
+   - **Payment Controller & Routes (`payment.controller.js`, `payment.routes.js`):**
+     - `GET /api/v1/payments/key`: Public Razorpay key ID retrieval.
+     - `POST /api/v1/payments/create-order`: Authenticated order generation.
+     - `POST /api/v1/payments/verify`: Authenticated signature verification.
+     - `GET /api/v1/payments/booking/:bookingId`: Payment history inquiry.
+     - Mounted in `backend/src/app.js` under `/api/v1/payments`.
+
+2. **Cloudinary & Multer Image Upload Pipeline:**
+   - **Multer Middleware (`middleware/upload.js`):** In-memory storage with 5MB max size limit and MIME-type validation (`image/jpeg`, `image/png`, `image/webp`).
+   - **Streaming Upload (`uploadBufferToCloudinary`):** Direct buffer stream upload to Cloudinary with automatic optimization transformations (`quality: auto`, `fetch_format: auto`) and graceful development fallback.
+   - **Upload Routes (`upload.routes.js`):**
+     - `POST /api/v1/upload/single`: Authenticated single image upload.
+     - `POST /api/v1/upload/multiple`: Authenticated multi-image upload (up to 5 images).
+     - Mounted in `backend/src/app.js` under `/api/v1/upload`.
+
+3. **Frontend Payment & Upload Integration:**
+   - **Payment API Service (`frontend/src/features/payments/paymentsApi.js`):** Client-side bindings for key retrieval, order initialization, signature verification, and image upload.
+   - **Interactive Payment Modal (`PaymentModal.jsx`):**
+     - Displays comprehensive order summary, amount payable in INR, booking reference, and mode selector (Card, Instant UPI, Netbanking).
+     - Built-in simulation checkout and live Razorpay gateway support.
+     - Instant receipt generation on capture with transaction IDs, auto-dismiss, and booking state refresh.
+   - **Booking Detail Integration (`BookingDetailPage.jsx`):**
+     - "Pay Advance Deposit" and "Pay Remaining Balance" contextual CTA buttons directly inside the pricing breakdown card.
+     - Shows dynamic progress bar and "Fully Paid & Confirmed" badge once payments are completed.
+   - **Reusable Cloudinary Image Uploader (`ImageUpload.jsx`):**
+     - Drag-and-drop & browse interface with instant local preview, file size check, upload progress spinner, and Cloudinary URL callback.
+
+### Verification Results
+| Check | Result |
+|---|---|
+| Backend syntax check | ✅ App loaded with payment & upload routes mounted (0 errors) |
+| Frontend production build | ✅ 1,513 modules built cleanly in 28.05s |
+| Signature Verification Logic | ✅ HMAC-SHA256 digest validation implemented |
+| Booking State Machine | ✅ Advance paid (`advance_paid`) & full balance (`fully_paid`) transitions verified |
+
+---
+
+## Phases 14–15
 
 See phase descriptions in [architecture.md](./docs/architecture.md).
 

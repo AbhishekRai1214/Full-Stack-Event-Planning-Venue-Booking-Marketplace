@@ -28,7 +28,9 @@ import Modal from '@/components/common/Modal';
 import {
   ArrowLeft, Calendar, Users, Building, Camera,
   FileText, AlertTriangle, XCircle, IndianRupee,
+  CreditCard, CheckCircle2,
 } from 'lucide-react';
+import PaymentModal from '@/features/payments/PaymentModal';
 import { formatCurrency, formatDate, formatEventType } from '@/utils';
 
 export const BookingDetailPage = () => {
@@ -40,6 +42,8 @@ export const BookingDetailPage = () => {
 
   const [cancelModal, setCancelModal] = useState(false);
   const [cancelReason, setCancelReason] = useState('');
+  const [paymentModal, setPaymentModal] = useState(false);
+  const [paymentType, setPaymentType] = useState('advance');
 
   useEffect(() => {
     if (id) dispatch(fetchBookingById(id));
@@ -222,6 +226,43 @@ export const BookingDetailPage = () => {
                   </p>
                 </div>
               )}
+
+              {/* Payment CTA Buttons */}
+              {booking.status !== 'cancelled' && booking.status !== 'rejected' && (
+                <div className="mt-4 pt-4 border-t border-border">
+                  {(booking.pricing?.advancePaid || 0) < (booking.pricing?.advanceRequired || (booking.pricing?.totalAmount * 0.3)) ? (
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      className="w-full justify-center shadow-md shadow-primary/20"
+                      leftIcon={<CreditCard className="w-4 h-4" />}
+                      onClick={() => {
+                        setPaymentType('advance');
+                        setPaymentModal(true);
+                      }}
+                    >
+                      Pay Advance Deposit ({formatCurrency(booking.pricing?.advanceRequired || Math.round((booking.pricing?.totalAmount || 0) * 0.3))})
+                    </Button>
+                  ) : (booking.pricing?.advancePaid || 0) < (booking.pricing?.totalAmount || 0) ? (
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      className="w-full justify-center bg-emerald-600 hover:bg-emerald-700 shadow-md shadow-emerald-600/20"
+                      leftIcon={<CreditCard className="w-4 h-4" />}
+                      onClick={() => {
+                        setPaymentType('balance');
+                        setPaymentModal(true);
+                      }}
+                    >
+                      Pay Remaining Balance ({formatCurrency((booking.pricing?.totalAmount || 0) - (booking.pricing?.advancePaid || 0))})
+                    </Button>
+                  ) : (
+                    <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-center gap-2 text-xs font-semibold text-emerald-700">
+                      <CheckCircle2 className="w-4 h-4" /> Fully Paid & Confirmed
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Actions */}
@@ -287,6 +328,17 @@ export const BookingDetailPage = () => {
           </div>
         </div>
       </Modal>
+
+      {/* Razorpay Payment Modal */}
+      <PaymentModal
+        isOpen={paymentModal}
+        onClose={() => setPaymentModal(false)}
+        booking={booking}
+        paymentType={paymentType}
+        onSuccess={() => {
+          if (id) dispatch(fetchBookingById(id));
+        }}
+      />
     </div>
   );
 };

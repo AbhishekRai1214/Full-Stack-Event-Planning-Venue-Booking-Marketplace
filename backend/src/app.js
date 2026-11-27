@@ -44,6 +44,8 @@ const reviewRoutes = require('./modules/reviews/review.routes');
 const notificationRoutes = require('./modules/notifications/notification.routes');
 const contactRoutes = require('./modules/contact/contact.routes');
 const adminRoutes = require('./modules/admin/admin.routes');
+const paymentRoutes = require('./modules/payments/payment.routes');
+const uploadRoutes = require('./modules/upload/upload.routes');
 
 const app = express();
 
@@ -183,6 +185,8 @@ apiRouter.use('/reviews', reviewRoutes);      // Phase 11
 apiRouter.use('/notifications', notificationRoutes); // Phase 11
 apiRouter.use('/admin', adminRoutes);         // Phase 12
 apiRouter.use('/contact', contactRoutes);    // Phase 11
+apiRouter.use('/payments', paymentRoutes);    // Phase 13
+apiRouter.use('/upload', uploadRoutes);        // Phase 13
 
 // API info endpoint
 apiRouter.get('/', (req, res) => {
