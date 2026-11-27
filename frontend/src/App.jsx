@@ -13,6 +13,8 @@ import BookingDetailPage from '@/pages/BookingDetailPage';
 import BudgetPlannerPage from '@/pages/BudgetPlannerPage';
 import ComparePage from '@/pages/ComparePage';
 import ContactPage from '@/pages/ContactPage';
+import VendorPortalPage from '@/pages/VendorPortalPage';
+import AdminDashboardPage from '@/pages/AdminDashboardPage';
 import CompareBar from '@/features/compare/components/CompareBar';
 import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
@@ -241,6 +243,22 @@ function App() {
           }
         />
         <Route path="/contact" element={<ContactPage />} />
+        <Route
+          path="/vendor/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['VENDOR', 'ADMIN']}>
+              <VendorPortalPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['ADMIN']}>
+              <AdminDashboardPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route

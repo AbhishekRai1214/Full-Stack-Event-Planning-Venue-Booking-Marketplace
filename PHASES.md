@@ -588,7 +588,44 @@ User, Venue, Vendor, Booking, Payment, Event, Budget, Review, Contact, Notificat
 
 ---
 
-## Phases 12–15
+## Phase 12 – Admin & Vendor Dashboards ✅
+
+**Status:** Complete  
+**Date:** 2026-11-27
+
+### What Was Implemented
+
+1. **Backend Admin Oversight Module (`backend/src/modules/admin/`):**
+   - **`admin.service.js`**: Platform telemetry computations (Total GMV, active users, venue inventory, pending approvals, vendor count, and recent transactions).
+   - User account activation/suspension toggles.
+   - Venue listing approval workflow (`approved`, `rejected` with rejection reasons).
+   - Vendor partner verification toggling.
+   - Customer contact message lifecycle updates (`read`, `replied`, `closed`).
+   - **`admin.routes.js`**: RBAC endpoints mounted at `/api/v1/admin`, strictly protected by `authenticate` and `authorize(ROLES.ADMIN)`.
+
+2. **Frontend Partner & Admin Dashboards (`frontend/src/`):**
+   - **`adminApi.js`**: Dedicated API service for administrative endpoints with mock fallback data.
+   - **`VendorPortalPage.jsx`**:
+     - Gross booking pipeline, pending enquiry counters, and confirmed events metrics.
+     - Booking Enquiry Review table: client event dates, guest counts, pricing contracts, and action buttons to **Confirm Booking**, **Decline**, or **Mark Event Completed**.
+     - Managed listings portfolio with view counts and status badges.
+     - Protected route `/vendor/dashboard` guarded for `VENDOR` and `ADMIN` roles.
+   - **`AdminDashboardPage.jsx`**:
+     - Executive KPI cards (Gross Platform Volume, Users, Listed Venues, Verified Vendors).
+     - **Pending Venue Approval Queue**: Merchant property review cards with cover previews, location, owner name, capacity, and one-click **Approve Listing** or **Reject** controls.
+     - **User Moderation Table**: Paginated user directory with role badges, join dates, and instant account **Suspend / Reactivate** toggles.
+     - Protected route `/admin/dashboard` guarded strictly for `ADMIN` role.
+
+### Verification Results
+| Check | Result |
+|---|---|
+| Backend syntax check | ✅ Admin module loaded with 0 errors |
+| Frontend production build | ✅ 1,511 modules built cleanly in 26.8s |
+| RBAC Route Guards | ✅ Role-based redirection verified on `/vendor/dashboard` & `/admin/dashboard` |
+
+---
+
+## Phases 13–15
 
 See phase descriptions in [architecture.md](./docs/architecture.md).
 

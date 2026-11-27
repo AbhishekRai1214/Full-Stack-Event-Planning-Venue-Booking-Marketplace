@@ -43,6 +43,7 @@ const budgetRoutes = require('./modules/budget/budget.routes');
 const reviewRoutes = require('./modules/reviews/review.routes');
 const notificationRoutes = require('./modules/notifications/notification.routes');
 const contactRoutes = require('./modules/contact/contact.routes');
+const adminRoutes = require('./modules/admin/admin.routes');
 
 const app = express();
 
@@ -180,6 +181,7 @@ apiRouter.use('/bookings', bookingRoutes);    // Phase 8
 apiRouter.use('/budgets', budgetRoutes);      // Phase 9
 apiRouter.use('/reviews', reviewRoutes);      // Phase 11
 apiRouter.use('/notifications', notificationRoutes); // Phase 11
+apiRouter.use('/admin', adminRoutes);         // Phase 12
 apiRouter.use('/contact', contactRoutes);    // Phase 11
 
 // API info endpoint
