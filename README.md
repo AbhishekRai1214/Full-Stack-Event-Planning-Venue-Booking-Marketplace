@@ -1,155 +1,134 @@
-# VenueAura
+# VenueAura 🏛️✨
 
-> **A premium event planning and venue booking marketplace built with the MERN stack.**
+> **Full-Stack Event Planning & Venue Booking Marketplace built with the MERN Stack.**
 
-VenueAura connects event planners with wedding venues, birthday spaces, banquet halls, and professional event service vendors across India.
+[![CI/CD](https://github.com/AbhishekRai1214/Full-Stack-Event-Planning-Venue-Booking-Marketplace/actions/workflows/ci.yml/badge.svg)](https://github.com/AbhishekRai1214/Full-Stack-Event-Planning-Venue-Booking-Marketplace/actions)
+[![MERN Stack](https://img.shields.io/badge/Stack-MongoDB%20%7C%20Express%20%7C%20React%20%7C%20Node-green.svg)](https://nodejs.org/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+VenueAura is an enterprise-grade digital marketplace connecting event hosts with heritage palaces, luxury banquet halls, lawns, and top-tier event service professionals (photographers, caterers, decorators, DJs, makeup artists) across India.
 
 ---
 
-## ✨ Features
+## 🌟 Key Capabilities & Features
 
-| Feature | Description |
+| Domain | Key Capabilities |
 |---|---|
-| 🏛️ Venue Discovery | Search, filter, and compare venues by location, event type, capacity, and price |
-| 🎭 Vendor Marketplace | Browse photographers, caterers, decorators, DJs, makeup artists, and more |
-| 📅 Event Booking | Book venues and vendors with date availability validation |
-| 💰 Budget Planner | Plan and track your complete event budget with expense categories |
-| ⚖️ Compare | Side-by-side comparison of venues and vendors |
-| 🔐 Secure Auth | JWT-based auth with role-based access control (Customer / Vendor / Admin) |
-| 💳 Payments | Razorpay integration for secure online payments |
-| 📊 Dashboards | Personalized dashboards for customers, vendors, and admins |
-| ⭐ Reviews | Verified reviews from customers who have completed bookings |
+| 🏛️ **Venue Discovery** | Multi-faceted search by city, event type, capacity, price per plate, and amenities with real-time filtering |
+| 📸 **Vendor Marketplace** | Category discovery, service packages, portfolio galleries, and direct quotation requests |
+| ⚖️ **Side-by-Side Comparison** | Real-time comparative matrix for venues and vendors with capacity, pricing, and feature highlights |
+| 📅 **Booking State Machine** | Formal lifecycle transitions (`enquiry` → `confirmed` → `advance_paid` → `fully_paid` → `completed`) |
+| 💳 **Razorpay Payments** | Advance deposits and balance settlements with cryptographic server-side HMAC-SHA256 verification |
+| ☁️ **Cloudinary Media Pipeline**| High-performance streaming image uploader with format/quality auto-optimization |
+| 💬 **Real-Time Direct Chat** | Instant messaging powered by Socket.io with rooms, typing indicators, read receipts, and listing deep linking |
+| 💰 **Budget & Expense Planner** | Interactive categorized expense manager with live utilization bars and financial charts |
+| 🔔 **Notification Center** | In-app real-time alerts for booking updates, payment captures, and inquiry replies |
+| 🛡️ **Role-Based Access Control** | Dual-token authentication (short-lived JWT + HttpOnly refresh cookies) across Customer, Vendor, and Admin roles |
+| 👑 **Admin & Vendor Portals** | Vendor listing manager and Admin verification center with platform analytics and KYC verification |
 
 ---
 
-## 🛠️ Tech Stack
+## 🏗️ Architecture & Tech Stack
 
-**Frontend:**
-- React.js + Vite
-- Tailwind CSS
-- Redux Toolkit
-- React Router DOM
-- React Hook Form + Zod
-- Axios
-
-**Backend:**
-- Node.js + Express.js
-- MongoDB + Mongoose
-- JWT Authentication
-- bcrypt
-- Pino (logging)
-- Zod (validation)
-
-**Integrations:**
-- Cloudinary (image uploads)
-- Razorpay (payments)
-- Nodemailer (emails)
+```
+Client (React 18 + Vite + Redux Toolkit + Tailwind CSS)
+  │
+  ├── REST API Requests (Axios with auto-refresh interceptors)
+  └── WebSocket Connections (Socket.IO client for live chat)
+        │
+        ▼
+Reverse Proxy (Nginx with Gzip & SSL)
+        │
+Express.js Modular Monolith Backend
+  ├── Security: Helmet, CORS, Rate Limiting, MongoSanitize
+  ├── Auth: Dual-Token JWT + HttpOnly Cookies (BCrypt 12 rounds)
+  ├── Validation: Strict Zod schemas on every route
+  ├── Messaging: Socket.io real-time engine with room routing
+  ├── Database: MongoDB & Mongoose ORM
+  └── External Services: Razorpay Gateway & Cloudinary CDN
+```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Quick Start Guide
 
-### Prerequisites
-
-- Node.js >= 18.x
-- MongoDB >= 7.x (with replica set for transactions — see [docs/deployment.md](docs/deployment.md))
-- npm >= 9.x
-
-### Installation
+### Option 1: Run with Docker Compose (Recommended)
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/yourusername/venueaura.git
-cd venueaura
+# Clone the repository
+git clone https://github.com/AbhishekRai1214/Full-Stack-Event-Planning-Venue-Booking-Marketplace.git
+cd Full-Stack-Event-Planning-Venue-Booking-Marketplace
 
-# 2. Install root-level dependencies
-npm install
+# Build and start all containers (MongoDB, Backend API, Frontend Nginx)
+docker-compose up --build -d
 
-# 3. Install all project dependencies
+# Verify containers are healthy
+docker-compose ps
+```
+
+- **Frontend Application:** `http://localhost` (Port 80)
+- **Backend API Server:** `http://localhost:5000/api/v1`
+- **Health Check Endpoint:** `http://localhost:5000/health`
+
+### Option 2: Run Locally (Bare Metal)
+
+```bash
+# 1. Install root, backend, and frontend dependencies
 npm run install:all
 
-# 4. Set up environment variables
+# 2. Configure environment variables
 cp backend/.env.example backend/.env
-# Edit backend/.env with your values
 
-cp frontend/.env.example frontend/.env
-# Edit frontend/.env with your values
-
-# 5. Start development servers
+# 3. Start both backend and frontend concurrently in development mode
 npm run dev
 ```
 
-The backend will be available at `http://localhost:5000`  
-The frontend will be available at `http://localhost:5173`  
-API docs (Swagger): `http://localhost:5000/api-docs`  
-Health check: `http://localhost:5000/health`
+- Frontend runs at: `http://localhost:5173`
+- Backend runs at: `http://localhost:5000`
 
 ---
 
-## 📁 Project Structure
+## 📚 API Reference Overview
 
-```
-venueaura/
-├── frontend/          # React + Vite application
-├── backend/           # Node.js + Express API
-├── docs/              # Architecture and design documentation
-├── PHASES.md          # Development phase tracker
-└── README.md
-```
+All REST endpoints follow standard conventions under `/api/v1/*`:
 
----
-
-## 📚 Documentation
-
-| Document | Description |
-|---|---|
-| [Architecture](docs/architecture.md) | System design, tech choices, module structure |
-| [Database Design](docs/database-design.md) | MongoDB schemas and relationships |
-| [Authentication Flow](docs/authentication-flow.md) | JWT auth sequences and security |
-| [API Design](docs/api-design.md) | All REST endpoints and conventions |
-| [Security](docs/security.md) | OWASP mitigations and security implementation |
-| [Booking Workflow](docs/booking-workflow.md) | Booking state machine and availability logic |
-| [Payment Workflow](docs/payment-workflow.md) | Razorpay integration and verification |
-| [Testing Strategy](docs/testing-strategy.md) | Test scenarios and coverage |
-| [Deployment](docs/deployment.md) | Environment setup and production guide |
+- `POST /api/v1/auth/register` – Register new user
+- `POST /api/v1/auth/login` – Login & receive tokens
+- `GET  /api/v1/venues` – List venues with multi-filtering
+- `GET  /api/v1/vendors` – List vendors by category
+- `POST /api/v1/bookings` – Initiate venue/vendor booking
+- `POST /api/v1/payments/create-order` – Create Razorpay payment order
+- `POST /api/v1/payments/verify` – Verify HMAC-SHA256 payment signature
+- `POST /api/v1/upload/single` – Upload media to Cloudinary
+- `GET  /api/v1/chat/conversations` – List direct chat threads
+- `GET  /api/v1/budgets/my-budget` – Get customer budget planner
 
 ---
 
-## 🔒 Roles
+## 📋 Comprehensive Phase Roadmap
 
-| Role | Capabilities |
-|---|---|
-| **Customer** | Browse, book, review, plan budget, manage events |
-| **Vendor** | List venues/services, manage bookings, respond to reviews |
-| **Admin** | Approve listings, verify vendors, manage platform |
+All 16 phases from initial architecture to production readiness have been built, verified, and committed:
 
----
-
-## 🧪 Testing
-
-```bash
-cd backend
-npm run test              # All tests
-npm run test:unit         # Unit tests
-npm run test:integration  # Integration tests
-npm run test:coverage     # With coverage report
-```
-
----
-
-## 📸 Screenshots
-
-> *Screenshots will be added as the UI is built in later phases.*
+- **Phase 0:** System Architecture & Database Design
+- **Phase 1:** Backend Skeleton & Health Probes
+- **Phase 2:** Design System & Reusable UI Components
+- **Phase 3:** Marketplace Homepage & Interactive Search
+- **Phase 4:** Venue Discovery & Details Showcase
+- **Phase 5:** Vendor Marketplace & Service Packages
+- **Phase 6:** JWT Authentication & Role-Based Access Control
+- **Phase 7:** Event Management & Milestone Planner
+- **Phase 8:** Booking Workflow & State Machine
+- **Phase 9:** Budget Planner & Expense Calculator
+- **Phase 10:** Side-by-Side Comparison Tool
+- **Phase 11:** Reviews, Real-time Notification Bell & Inquiries
+- **Phase 12:** Admin Control Center & Vendor Partner Portal
+- **Phase 13:** Payment Integration (Razorpay) & Cloudinary Upload Pipeline
+- **Phase 14:** Real-Time Direct Messaging (Socket.io)
+- **Phase 15:** Dockerization, Nginx Config, CI/CD GitHub Actions & Production Polish
 
 ---
 
-## 🤝 Contributing
+## 📄 License
 
-This is a learning and portfolio project. The development is intentionally incremental with meaningful commits showing the full journey from architecture to production-ready application.
-
----
-
-## 📜 License
-
-MIT License – see [LICENSE](LICENSE) for details.
-
+This project is licensed under the [MIT License](LICENSE).
