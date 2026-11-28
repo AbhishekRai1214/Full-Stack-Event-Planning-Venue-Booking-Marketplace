@@ -13,6 +13,7 @@ import BookingDetailPage from '@/pages/BookingDetailPage';
 import BudgetPlannerPage from '@/pages/BudgetPlannerPage';
 import ComparePage from '@/pages/ComparePage';
 import ContactPage from '@/pages/ContactPage';
+import MessagesPage from '@/pages/MessagesPage';
 import VendorPortalPage from '@/pages/VendorPortalPage';
 import AdminDashboardPage from '@/pages/AdminDashboardPage';
 import CompareBar from '@/features/compare/components/CompareBar';
@@ -243,6 +244,14 @@ function App() {
           }
         />
         <Route path="/contact" element={<ContactPage />} />
+        <Route
+          path="/messages"
+          element={
+            <ProtectedRoute>
+              <MessagesPage />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/vendor/dashboard"
           element={

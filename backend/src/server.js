@@ -26,6 +26,7 @@ require('dotenv').config();
 const http = require('http');
 const app = require('./app');
 const { connectDatabase, closeDatabase } = require('./config/database');
+const { initSocket } = require('./config/socket');
 const logger = require('./utils/logger');
 
 const PORT = parseInt(process.env.PORT, 10) || 5000;
@@ -40,6 +41,9 @@ const startServer = async () => {
   try {
     // Connect to MongoDB before accepting requests
     await connectDatabase();
+
+    // Initialize Socket.io real-time engine
+    initSocket(server);
 
     server.listen(PORT, () => {
       logger.info('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');

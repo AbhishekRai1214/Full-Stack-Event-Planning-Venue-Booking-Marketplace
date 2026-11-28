@@ -12,6 +12,7 @@ import {
   LayoutDashboard,
   Shield,
   Briefcase,
+  MessageSquare,
 } from 'lucide-react';
 import NotificationBell from '@/components/common/NotificationBell';
 import Button from '@/components/common/Button';
@@ -123,6 +124,16 @@ export const Navbar = () => {
 
           <NotificationBell />
 
+          {isAuthenticated && (
+            <Link
+              to="/messages"
+              className="p-2 text-text-muted hover:text-primary hover:bg-neutral-100 rounded-button transition-colors relative"
+              title="Messages"
+            >
+              <MessageSquare className="w-5 h-5" />
+            </Link>
+          )}
+
           {isAuthenticated && user ? (
             <div className="relative">
               <button
@@ -190,6 +201,15 @@ export const Navbar = () => {
                   >
                     <User className="w-4 h-4" />
                     <span>My Profile & Bookings</span>
+                  </Link>
+
+                  <Link
+                    to="/messages"
+                    className="flex items-center gap-2 px-4 py-2 text-xs text-text hover:bg-neutral-50 hover:text-primary"
+                    onClick={() => setIsUserMenuOpen(false)}
+                  >
+                    <MessageSquare className="w-4 h-4 text-primary" />
+                    <span>Direct Messages</span>
                   </Link>
 
                   <div className="border-t border-border my-1" />

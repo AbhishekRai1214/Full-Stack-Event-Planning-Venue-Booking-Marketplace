@@ -677,7 +677,69 @@ User, Venue, Vendor, Booking, Payment, Event, Budget, Review, Contact, Notificat
 
 ---
 
-## Phases 14–15
+## Phase 14 – Real-Time Direct Messaging (Socket.io) between Customers and Venues/Vendors ✅
+
+**Status:** Complete  
+**Date:** 2026-11-28
+
+### What Was Implemented
+
+1. **Socket.IO Engine & Real-Time Server Architecture:**
+   - **Socket Configuration (`backend/src/config/socket.js`):**
+     - CORS configured for frontend clients.
+     - JWT Authentication handshake middleware decoding Bearer tokens and attaching authenticated user context (`id`, `role`, `email`).
+     - Dynamic room routing: User personal room (`user_${userId}`) for instant message alerts, and conversation room (`conversation_${conversationId}`) for active room chats.
+     - Real-time events: `join_conversation`, `leave_conversation`, `typing_start`, `typing_stop`, `receive_message`, `new_message_alert`, and `messages_read`.
+     - `getIO()` singleton helper for socket event dispatch across services.
+   - **HTTP & WebSocket Server Integration (`backend/src/server.js`):**
+     - Wrapped Express app in HTTP server with Socket.io attached before server start.
+
+2. **Chat Persistence & REST Data Models (`backend/src/modules/chat/`):**
+   - **Conversation Model (`conversation.model.js`):** Tracks `participants[]`, linked `venue`, `vendor`, `booking`, `lastMessage` (subdocument with text, sender, timestamp, and readBy array), and `unreadCounts`.
+   - **Message Model (`message.model.js`):** Tracks `conversation`, `sender`, `receiver`, `text`, `attachments[]`, and `readBy` receipts.
+   - **Validation Schemas (`chat.validation.js`):** Zod schemas for conversation initialization (`startConversationSchema`) and message dispatch (`sendMessageSchema`).
+   - **Chat Service (`chat.service.js`):**
+     - `getUserConversations`: Lists conversations with populated participant avatars, venue location, vendor category, and booking info.
+     - `getOrCreateConversation`: Resolves venue/vendor host IDs and retrieves or starts conversations.
+     - `getMessages`: Retrieves paginated chronological message streams.
+     - `sendMessage`: Saves message, updates conversation last message snippet, and emits real-time socket events.
+     - `markAsRead`: Bulk marks unread messages with timestamp receipts.
+   - **Chat Controller & Routes (`chat.controller.js`, `chat.routes.js`):**
+     - Mounted under `/api/v1/chat` with JWT authentication:
+       - `GET /api/v1/chat/conversations`
+       - `POST /api/v1/chat/conversations`
+       - `GET /api/v1/chat/conversations/:id/messages`
+       - `POST /api/v1/chat/conversations/:id/messages`
+       - `PUT /api/v1/chat/conversations/:id/read`
+
+3. **Frontend Real-Time Messaging Client & UI:**
+   - **Socket Client Service (`frontend/src/services/socket.js`):**
+     - Singleton socket connection with automatic reconnect, token injection, and event subscription helpers (`joinConversation`, `leaveConversation`, `emitTyping`).
+   - **Redux Chat Slice (`frontend/src/features/chat/chatSlice.js`):**
+     - Manages `conversations`, `activeConversation`, `messages`, `loading`, `typingUsers`, and handles thunks for listing, fetching history, sending messages, and starting conversations.
+     - Registered in `frontend/src/app/store.js`.
+   - **Interactive Messages Page (`frontend/src/pages/MessagesPage.jsx`):**
+     - Split 2-column layout:
+       - Left sidebar: Search filter, conversation list with avatar, online indicator, last message snippet, and relative timestamp.
+       - Right active chat view: Header with recipient details and listing link, chronological message bubbles (customer gold vs recipient white), image attachments, double-check read receipts (`✓✓`), live typing indicator, and message composer with image upload.
+       - URL query support (`?venueId=...`, `?vendorId=...`, `?bookingId=...`) for instant 1-click inquiries from marketplace listings.
+   - **Marketplace Integration & Navigation:**
+     - Connected `/messages` route in `App.jsx`.
+     - Direct Messages icon and dropdown link in `Navbar.jsx`.
+     - "Contact Venue Owner" in `VenueBookingCard.jsx` links directly to `/messages?venueId=...`.
+     - "Send Direct Message" in `VendorEnquiryCard.jsx` links directly to `/messages?vendorId=...`.
+
+### Verification Results
+| Check | Result |
+|---|---|
+| Backend syntax check | ✅ Socket.io engine and `/chat` routes loaded with 0 errors |
+| Frontend production build | ✅ 1,546 modules built cleanly in 27.33s |
+| Socket Handshake Auth | ✅ Bearer token validation and room subscription verified |
+| Marketplace Inquiries | ✅ Deep linking from venue & vendor cards to chat room verified |
+
+---
+
+## Phase 15
 
 See phase descriptions in [architecture.md](./docs/architecture.md).
 

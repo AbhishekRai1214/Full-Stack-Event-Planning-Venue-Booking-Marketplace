@@ -24,6 +24,7 @@ import eventsReducer from '@/features/events/eventsSlice';
 import bookingsReducer from '@/features/bookings/bookingsSlice';
 import budgetReducer from '@/features/budget/budgetSlice';
 import compareReducer from '@/features/compare/compareSlice';
+import chatReducer from '@/features/chat/chatSlice';
 
 export const store = configureStore({
   reducer: {
@@ -34,6 +35,7 @@ export const store = configureStore({
     bookings: bookingsReducer,
     budget: budgetReducer,
     compare: compareReducer,
+    chat: chatReducer,
   },
 
   middleware: getDefaultMiddleware =>

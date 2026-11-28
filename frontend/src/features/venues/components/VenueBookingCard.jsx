@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Calendar,
   Users,
@@ -13,6 +14,7 @@ import Modal from '@/components/common/Modal';
 import { formatCurrency } from '@/utils';
 
 export const VenueBookingCard = ({ venue }) => {
+  const navigate = useNavigate();
   const [bookingDate, setBookingDate] = useState('');
   const [guestCount, setGuestCount] = useState(venue?.capacity?.min || 150);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -129,7 +131,7 @@ export const VenueBookingCard = ({ venue }) => {
           <Button
             variant="outline"
             className="w-full"
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => navigate(`/messages?venueId=${venue?._id}`)}
             leftIcon={<MessageSquare className="w-4 h-4 text-primary" />}
           >
             Contact Venue Owner

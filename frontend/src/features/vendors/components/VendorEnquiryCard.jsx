@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Phone,
   Mail,
@@ -15,6 +16,7 @@ import Modal from '@/components/common/Modal';
 import { formatCurrency } from '@/utils';
 
 export const VendorEnquiryCard = ({ vendor, selectedPackage }) => {
+  const navigate = useNavigate();
   const [eventDate, setEventDate] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -80,7 +82,7 @@ export const VendorEnquiryCard = ({ vendor, selectedPackage }) => {
           <Button
             variant="outline"
             className="w-full"
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => navigate(`/messages?vendorId=${vendor?._id}`)}
             leftIcon={<MessageSquare className="w-4 h-4 text-primary" />}
           >
             Send Direct Message
